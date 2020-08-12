@@ -1,0 +1,47 @@
+
+html{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    @include respond(big-desktop){
+        font-size: 22px;
+    }
+}
+
+body{
+    background: $color-blue-secondary;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, $color-blue-primary, $color-blue-secondary);  
+    background: linear-gradient(to right, $color-blue-primary, $color-blue-secondary); 
+    text-align: center;
+    min-height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    @include respond(phone){
+        .content-container{
+            margin: 0 1rem;
+            margin-top: 3rem;
+        }
+        .quote-text{
+            font-size: 1.5rem;
+        }
+        .text-main{
+            font-size: 2rem;
+        }
+        .btn{
+            font-size: 0.8rem;
+            height: 2rem;
+            padding: 0.5rem 1.2rem;
+        }
+        .btn-container-1{
+            width: 100%;
+        }
+        .fab{
+            font-size: 1rem;
+        }
+    }
+  
+}
