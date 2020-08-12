@@ -1,0 +1,28 @@
+
+.btn{
+    cursor: pointer;
+            font-size: 1.2rem;
+            height: 2.5rem;
+            border: none;
+            border-radius: 0.625rem;
+            color: #fff;
+            background: $color-blue-tertiary;
+            outline: none;
+            padding: 0.5rem 1.8rem;
+            box-shadow: 0 0.3rem $shadow-btn;
+            white-space: nowrap;
+
+    &:hover{
+        background: lighten($color-blue-tertiary, 5%);
+    }
+
+    &:active{
+        transform: translateY(0.3rem);
+        box-shadow: 0 0.1rem $shadow-btn
+    }
+
+    &-pressed{
+        transform: translateY(0.3rem);
+        box-shadow: 0 0.1rem $shadow-btn
+    }
+}

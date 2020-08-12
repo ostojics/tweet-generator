@@ -1,0 +1,41 @@
+.btn-container{
+    a{
+        display: inline-block;
+    }
+    &-1{
+        margin: 0 auto;
+        width: 70%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &-2{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+}
+
+.content-container{
+    margin-top: 3rem;
+}
+
+.text-container{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+
+    .quote-container{
+        display: flex;
+    }
+
+    .text-author{
+        margin-top: 2rem;
+    }
+}
+
+.text-container{
+    background: rgba(255, 255, 255, .45);
+    padding: 3rem;
+    border-radius: 2rem;
+}
