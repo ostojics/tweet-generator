@@ -12,22 +12,24 @@
     <main class="content">
         <h1 class="text-main">Tweet Generator</h1>
     <div class="btn-container-1">
-       <button class="btn">Quote</button>
-       <button class="btn">Random Fact</button>
-       <button class="btn">Joke</button>
+       <button class="btn btn-pressed" id="opt-quote">Quote</button>
+       <button class="btn" id="opt-fact">Random Fact</button>
+       <button class="btn" id="opt-joke">Joke</button>
     </div>
     <div class="content-container">
         <div class="text-container">
            <div class="quote-container">
-            <span class="text-quote">Out of everything you see, only love is infinite</span>
+            <span class="text-quote"></span>
            </div>
-          <span class="text-author">Rumi</span>
+          <span class="text-author"></span>
            <div class="btn-container-2">
               <button class="btn btn-twitter"> <i class="fab fa-twitter" title="Tweet this!"></i></button>
-              <button class="btn">New Quote</button>
+              <button class="btn btn-new">New Quote</button>
            </div>
         </div>
     </div>
     </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
