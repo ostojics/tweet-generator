@@ -5,6 +5,17 @@
             @content;
         }
     }
+    @if($breakpoint == phone-land){
+        @media (max-width: 45.625em){
+            @content;
+        }
+    }
+    @if($breakpoint == tab-port){
+        @media(max-width: 56.25em){
+            @content;
+        }  
+    }
+
     @if($breakpoint == big-desktop){
         @media (min-width: 112.5em) {
             @content;
