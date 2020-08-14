@@ -7,60 +7,76 @@ const authorText = document.querySelector('.text-author');
 const tweetBtn = document.querySelector('.btn-twitter');
 const newBtn = document.querySelector('.btn-new');
 
-// Get quote function
-async function getQuote(){
+
+// Function that handles all api requests and returns required content
+async function getContent(proxy, api){
     try {
-        const proxyUrl = 'https://cryptic-forest-14329.herokuapp.com/'
-        const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'
+        const proxyUrl = proxy;
+        const apiUrl = api;
         const response = await fetch(proxyUrl + apiUrl);
         const data =  await response.json();
-        contentText.textContent = data.quoteText;
-        if(data.quoteAuthor === ''){
-            authorText.textContent = 'Unknown';
-        } else {
-            authorText.textContent = data.quoteAuthor;
-        }
-        newBtn.textContent = 'New Quote';
-    } catch (error) {
-        getQuote();
-        console.log('error', error);
-    }
-}
-
-// Get facts function
-async function getFacts(){
-    try {
-        const apiUrl = 'https://uselessfacts.jsph.pl/random.json?language=en';
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        contentText.textContent = data.text;
-        authorText.textContent = '';
-        newBtn.textContent = 'New Fact';
-    } catch (error) {
-        console.log('error',error);
-    }
-}
-
-// Get joke function
-async function getJoke(){
-    try {
-        const apiUrl = 'https://sv443.net/jokeapi/v2/joke/Programming,Miscellaneous?blacklistFlags=nsfw,religious,political,racist,sexist';
-        const response = await fetch(apiUrl);
-        const data = await response.json();
         console.log(data);
-        if(data.type === 'single'){
+        // Handle quote requests
+        if(api === 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'){
+            contentText.textContent = data.quoteText;
+            if(data.quoteAuthor === ''){
+                authorText.textContent = 'Unknown';
+            } else {
+                authorText.textContent = data.quoteAuthor;
+            }
+            newBtn.textContent = 'New Quote';
+        }
+        // Handle fact requests
+        if(api === 'https://uselessfacts.jsph.pl/random.json?language=en'){
+            contentText.textContent = data.text;
+            authorText.textContent = '';
+            newBtn.textContent = 'New Fact';
+            if(data.text.length > 280){
+             getContent('','https://uselessfacts.jsph.pl/random.json?language=en');
+            }
+        }
+        // Handle joke requests
+        if(api === 'https://sv443.net/jokeapi/v2/joke/Programming,Miscellaneous?blacklistFlags=nsfw,religious,political,racist,sexist'){
+            authorText.textContent = '';
+            newBtn.textContent = 'New Joke';
+            if(data.type === 'single'){
             contentText.textContent = data.joke;
-        } else {
+            } else {
             contentText.textContent = data.setup + ' ... ' + data.delivery;
+            }
         }
     } catch (error) {
-        console.log('error',error);
+        console.log('error',error)
+        if(api === 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'){
+            getContent('https://cryptic-forest-14329.herokuapp.com/', 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json');
+        }
     }
-    
 }
+
+// Function that handles click events on the options
+const handleOptionEvent = (event) => {
+    event.target.classList.add('btn-pressed');
+    // Get all buttons that have btn-pressed class, if one of the buttons is not the one that is clicked remove that class from it
+    const pressedButtons = document.querySelectorAll('.btn-pressed');
+    for(let button of pressedButtons){
+        if(button !== event.target){
+            button.classList.remove('btn-pressed');
+        }
+    }
+    // Check which option is clicked, get content that corresponds with selected option
+    if(event.target.id === 'opt-quote'){
+        getContent('https://cryptic-forest-14329.herokuapp.com/', 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json');
+    } else if(event.target.id === 'opt-fact'){
+        getContent('', 'https://uselessfacts.jsph.pl/random.json?language=en');
+    } else {
+        getContent('', 'https://sv443.net/jokeapi/v2/joke/Programming,Miscellaneous?blacklistFlags=nsfw,religious,political,racist,sexist');
+    }
+}
+  
+
 
 // On load 
-getQuote();
+getContent('https://cryptic-forest-14329.herokuapp.com/', 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json');
 
 // Event listeners
 
@@ -68,22 +84,27 @@ getQuote();
 newBtn.addEventListener('click',() => {
     let currentOption = document.querySelector('.btn-pressed');
     if(currentOption.textContent === 'Quote'){
-        getQuote();
+        getContent('https://cryptic-forest-14329.herokuapp.com/', 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json');
     } else if(currentOption.textContent === 'Random Fact'){
-        getFacts();
+        getContent('', 'https://uselessfacts.jsph.pl/random.json?language=en');
+    } else if(currentOption.textContent === 'Joke'){
+        getContent('', 'https://sv443.net/jokeapi/v2/joke/Programming,Miscellaneous?blacklistFlags=nsfw,religious,political,racist,sexist');
     }
 });
 
-quoteOption.addEventListener('click', () => {
-    quoteOption.classList.add('btn-pressed');
-    factOption.classList.remove('btn-pressed');
-    jokeOption.classList.remove('btn-pressed');
-    getQuote();
-});
+quoteOption.addEventListener('click', handleOptionEvent);
+    
 
-factOption.addEventListener('click',() => {
-    quoteOption.classList.remove('btn-pressed');
-    factOption.classList.add('btn-pressed');
-    jokeOption.classList.remove('btn-pressed');
-    getFacts();
+
+factOption.addEventListener('click', handleOptionEvent);
+  
+
+jokeOption.addEventListener('click', handleOptionEvent);
+ 
+// Listen to click event on twitter button to tweet current content
+tweetBtn.addEventListener('click',() => {
+    const currentTextContent = contentText.textContent;
+    const currentAuthorText = authorText.textContent;
+    const twitterUrl = 'https://twitter.com/intent/tweet';
+    window.open(`https://twitter.com/intent/tweet?text=${currentTextContent} ${currentAuthorText}`,'_blank');
 })

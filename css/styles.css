@@ -38,10 +38,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center; }
+  @media (max-width: 56.25em) {
+    body .text-container {
+      width: 38rem; } }
+  @media (max-width: 45.625em) {
+    body .text-container {
+      width: 31.25rem; } }
   @media (max-width: 37.5em) {
     body .content-container {
       margin: 0 1rem;
       margin-top: 3rem; }
+      body .content-container .text-container {
+        width: 12.5rem; }
     body .quote-text {
       font-size: 1.5rem; }
     body .text-main {
@@ -96,9 +104,8 @@ body {
 .text-container {
   display: flex;
   flex-direction: column;
-  width: auto; }
-  .text-container .quote-container {
-    display: flex; }
+  width: auto;
+  width: 50rem; }
   .text-container .text-author {
     margin-top: 2rem; }
 
