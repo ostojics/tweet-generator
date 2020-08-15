@@ -22,10 +22,12 @@
     }
     &-pressed{
         transform: translateY(0.3rem);
-        box-shadow: 0 0.1rem $shadow-btn
+        box-shadow: 0 0.1rem $shadow-btn;
     }
-
-   
+    &-pressed:hover{
+        background: $color-blue-tertiary;
+        cursor: default!important;
+    }
 }
 
 

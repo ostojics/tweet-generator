@@ -71,11 +71,13 @@ async function getContent(proxy, api){
 // Function that handles click events on the options
 const handleOptionEvent = (event) => {
     event.target.classList.add('btn-pressed');
+    event.target.disabled = true;
     // Get all buttons that have btn-pressed class, if one of the buttons is not the one that is clicked remove that class from it
     const pressedButtons = document.querySelectorAll('.btn-pressed');
     for(let button of pressedButtons){
         if(button !== event.target){
             button.classList.remove('btn-pressed');
+            button.disabled = false;
         }
     }
     // Check which option is clicked, get content that corresponds with selected option
