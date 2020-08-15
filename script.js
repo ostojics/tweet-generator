@@ -6,23 +6,38 @@ const contentText = document.querySelector('.text-quote');
 const authorText = document.querySelector('.text-author');
 const tweetBtn = document.querySelector('.btn-twitter');
 const newBtn = document.querySelector('.btn-new');
+const loader = document.querySelector('.loader');
 
-
+// Show loader
+const showLoader = () => {
+   loader.hidden = false;
+   contentText.hidden = true;
+   authorText.hidden = true;
+}
+// Hide loader
+const hideLoader = () => {
+    loader.hidden = true;
+    contentText.hidden = false;
+   authorText.hidden = false;
+}
 // Function that handles all api requests and returns required content
 async function getContent(proxy, api){
     try {
+        showLoader();
         const proxyUrl = proxy;
         const apiUrl = api;
         const response = await fetch(proxyUrl + apiUrl);
         const data =  await response.json();
-        console.log(data);
         // Handle quote requests
         if(api === 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'){
             contentText.textContent = data.quoteText;
             if(data.quoteAuthor === ''){
                 authorText.textContent = 'Unknown';
             } else {
-                authorText.textContent = data.quoteAuthor;
+                authorText.textContent = `-${data.quoteAuthor}`;
+            }
+            if(data.quoteText.length > 120){
+                contentText.classList.add('long-quote');
             }
             newBtn.textContent = 'New Quote';
         }
@@ -45,8 +60,8 @@ async function getContent(proxy, api){
             contentText.textContent = data.setup + ' ... ' + data.delivery;
             }
         }
+        hideLoader();
     } catch (error) {
-        console.log('error',error)
         if(api === 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'){
             getContent('https://cryptic-forest-14329.herokuapp.com/', 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json');
         }
